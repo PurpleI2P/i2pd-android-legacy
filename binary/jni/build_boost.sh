@@ -2,12 +2,12 @@
 
 set -e
 
-BOOST_VERSION=1.84.0
-BOOST_LIBS=program_options
+BOOST_VERSION=1.89.0
+BOOST_LIBS=json,program_options,url
 
 function build_one {
 	echo "Configuring and building..."
-	CXXFLAGS="-std=c++14" \
+	CXXFLAGS="-std=c++23" \
 	NCPU=$(nproc) \
 	./build-android.sh \
 	--boost=$BOOST_VERSION \
@@ -36,27 +36,27 @@ function build {
 	for arg in "$@"; do
 		case "$arg" in
 			x86_64)
-				API=21
-				TARGET=x86_64
+				API=23
+				CPU=x86_64
 				build_one
 			;;
 			arm64)
-				API=21
+				API=23
 				CPU=arm64-v8a
 				build_one
 			;;
 			x86)
-				API=16
+				API=23
 				CPU=x86
 				build_one
 			;;
 			arm)
-				API=16
+				API=23
 				CPU=armeabi-v7a
 				build_one
 			;;
 			all)
-				API=16
+				API=23
 				build_one
 			;;
 			*)
@@ -71,6 +71,7 @@ cd boost
 
 # disable verbose output
 sed -i -E -e 's/d\+2/d\+0/' build-android.sh
+sed -i -E -e 's/\"28\.2\"/&\|\"29\.0\"/' build-android.sh
 
 if (( $# == 0 )); then
 	build all

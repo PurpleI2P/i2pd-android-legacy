@@ -276,37 +276,37 @@ public class I2PDActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.action_stop:
-                i2pdStop();
-                return true;
+        if (id == R.id.action_stop) {
+            i2pdStop();
+            return true;
 
-            case R.id.action_graceful_stop:
-                synchronized (graceStartedMillis_LOCK) {
-                    if (getGracefulQuitTimer() != null)
-                        cancelGracefulStop();
-                    else
-                        i2pdGracefulStop();
-                }
-                return true;
-
-            case R.id.action_battery_otimizations:
-                onActionBatteryOptimizations();
-                return true;
-
-            case R.id.action_reload_tunnels_config:
-                onReloadTunnelsConfig();
-                return true;
-
-            case R.id.action_start_webview:
-                if(daemon.isStartedOkay())
-                    startActivity(new Intent(getApplicationContext(), WebConsoleActivity.class));
+        } else if (id == R.id.action_graceful_stop) {
+            synchronized (graceStartedMillis_LOCK) {
+                if (getGracefulQuitTimer() != null)
+                    cancelGracefulStop();
                 else
-                    Toast.makeText(this,"I2Pd not was started!", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_settings:
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                return true;
+                    i2pdGracefulStop();
+            }
+            return true;
+
+        } else if (id == R.id.action_battery_otimizations) {
+            onActionBatteryOptimizations();
+            return true;
+
+        } else if (id == R.id.action_reload_tunnels_config) {
+            onReloadTunnelsConfig();
+            return true;
+
+        } else if (id == R.id.action_start_webview) {
+            if(daemon.isStartedOkay())
+                startActivity(new Intent(getApplicationContext(), WebConsoleActivity.class));
+            else
+                Toast.makeText(this,"I2Pd not was started!", Toast.LENGTH_SHORT).show();
+            return true;
+
+        } else if (id == R.id.action_settings) {
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

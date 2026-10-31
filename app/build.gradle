@@ -17,22 +17,19 @@ dependencies {
 }
 
 android {
-    lintOptions {
-        // Not so a good way
+    lint {
         disable 'DuplicatePlatformClasses'
     }
 
-    compileSdkVersion 33
+    compileSdk 36
+    ndkVersion "29.0.14206865"
 
     defaultConfig {
         applicationId "org.purplei2p.i2pd"
-        targetSdkVersion 33
-        // TODO: 24?
-        minSdkVersion 16
-        versionCode 2610000
-        versionName "2.61.0"
-        archivesBaseName += "-$versionName"
-        ndkVersion "23.2.8568313"
+        targetSdk 36
+        minSdk 23
+        versionCode 3000000
+        versionName "3.0.0"
 
         ndk {
             abiFilters "armeabi-v7a"
@@ -68,10 +65,14 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'
         }
         debug {
             jniDebuggable = true
@@ -85,21 +86,25 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     namespace 'org.purplei2p.i2pd'
 }
 
-ext.abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
-import com.android.build.OutputFile
+base { archivesName = "i2pd-${android.defaultConfig.versionName}" }
 
-android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+def abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
 
-        if (baseAbiVersionCode != null) {
-            output.versionCodeOverride = baseAbiVersionCode + variant.versionCode
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.each { output ->
+            def abi = output.filters.find { it.filterType.name() == 'ABI' }?.identifier
+            def baseAbiVersionCode = abiCodes.get(abi)
+
+            if (baseAbiVersionCode != null) {
+                output.versionCode.set(baseAbiVersionCode + output.versionCode.getOrElse(0))
+            }
         }
     }
 }

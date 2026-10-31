@@ -43,25 +43,25 @@ function build {
 	for arg in "$@"; do
 		case "$arg" in
 			x86_64)
-				API=21
+				API=23
 				CPU=x86_64
 				TARGET=android-x86_64
 				build_one
 			;;
 			arm64)
-				API=21
+				API=23
 				CPU=arm64-v8a
 				TARGET=android-arm64
 				build_one
 			;;
 			arm)
-				API=16
+				API=23
 				CPU=armeabi-v7a
 				TARGET=android-arm
 				build_one
 			;;
 			x86)
-				API=16
+				API=23
 				CPU=x86
 				TARGET=android-x86
 				build_one

@@ -2,34 +2,38 @@ name: Android CI
 
 on: [push, pull_request]
 
+env:
+  NDK_VERSION: 29.0.14206865
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: 'recursive'
     - name: Install GNU C++ compiler
       run: |
         sudo apt-get update
         sudo apt-get install -y g++
-    - name: Switch to JDK 11
-      run: export JAVA_HOME=$JAVA_HOME_11_X64
+    - uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - uses: gradle/actions/setup-gradle@v5
     - name: Install required Android SDK packages
-      run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;3.22.1" "ndk;23.2.8568313"
+      run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
     - name: Build required modules
       run: |
-        export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/23.2.8568313
-        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313
+        export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$NDK_VERSION
+        export ANDROID_NDK_ROOT=$ANDROID_NDK_HOME
         pushd binary/jni
         ./build.sh
         popd
-    - name: Change concurrent build processes
-      run: sed -i 's|-j\${\(.*\)}|-j2|g' app/build.gradle
     - name: Build with Gradle
       run: ./gradlew --no-daemon assembleDebug
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: android-apks
         path: app/build/outputs/apk/debug/*.apk
@@ -37,21 +41,15 @@ jobs:
   build-binary:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: 'recursive'
-    - name: Install GNU C++ compiler
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y g++
-    - name: Switch to JDK 11
-      run: export JAVA_HOME=$JAVA_HOME_11_X64
     - name: Install required Android SDK packages
-      run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "cmake;3.22.1" "ndk;23.2.8568313"
+      run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;$NDK_VERSION"
     - name: Build binary with NDK
       run: |
-        export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/23.2.8568313
-        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313
+        export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$NDK_VERSION
+        export ANDROID_NDK_ROOT=$ANDROID_NDK_HOME
         pushd binary/jni
         ./build.sh -b
         popd
@@ -61,12 +59,12 @@ jobs:
         ./build-archive
         popd
     - name: Upload binaries archive
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: android-binaries
         path: binary/libs/*
     - name: Upload binaries package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: android-binaries-pack
         path: contrib/binary_pack/i2pd_*_android_binary.zip

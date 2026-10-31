@@ -1,8 +1,7 @@
 NDK_TOOLCHAIN_VERSION := clang
 APP_STL := c++_static
 
-# Enable c++17 extensions in source code
-APP_CPPFLAGS += -std=c++17 -fexceptions -frtti
+APP_CPPFLAGS += -std=c++23 -fexceptions -frtti
 
 APP_CPPFLAGS += -DANDROID -D__ANDROID__ -DUSE_UPNP -Wno-deprecated-declarations
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)

@@ -1,17 +1,15 @@
-APP_ABI += all
-#APP_ABI += arm64-v8a
-#APP_ABI += armeabi-v7a
-#APP_ABI += x86_64
-#APP_ABI += x86
+#APP_ABI += all
+APP_ABI += arm64-v8a
+APP_ABI += armeabi-v7a
+APP_ABI += x86_64
+APP_ABI += x86
 
-APP_PLATFORM := android-16
-#APP_PLATFORM := android-21
+APP_PLATFORM := android-23
 
 NDK_TOOLCHAIN_VERSION := clang
 APP_STL := c++_static
 
-# Enable c++17 extensions in source code
-APP_CPPFLAGS += -std=c++17 -fexceptions -frtti
+APP_CPPFLAGS += -std=c++23 -fexceptions -frtti
 
 APP_CPPFLAGS += -DANDROID_BINARY -DANDROID -D__ANDROID__ -DUSE_UPNP -Wno-deprecated-declarations
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)

@@ -4,9 +4,11 @@ LOCAL_MODULE := i2pd
 LOCAL_CPP_FEATURES := rtti exceptions
 LOCAL_C_INCLUDES += $(IFADDRS_PATH) $(LIB_SRC_PATH) $(LIB_CLIENT_SRC_PATH) $(LANG_SRC_PATH) $(DAEMON_SRC_PATH)
 LOCAL_STATIC_LIBRARIES := \
-	boost_program_options \
 	crypto \
 	ssl \
+	boost_json \
+	boost_program_options \
+	boost_url \
 	miniupnpc
 LOCAL_LDLIBS := -lz
 
@@ -28,8 +30,22 @@ include $(BUILD_EXECUTABLE)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
+LOCAL_MODULE := boost_json
+LOCAL_SRC_FILES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/lib/libboost_json.a
+LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/include
+include $(PREBUILT_STATIC_LIBRARY)
+
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
 LOCAL_MODULE := boost_program_options
 LOCAL_SRC_FILES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/lib/libboost_program_options.a
+LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/include
+include $(PREBUILT_STATIC_LIBRARY)
+
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := boost_url
+LOCAL_SRC_FILES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/lib/libboost_url.a
 LOCAL_EXPORT_C_INCLUDES := $(BOOST_PATH)/build/out/$(TARGET_ARCH_ABI)/include
 include $(PREBUILT_STATIC_LIBRARY)
 
