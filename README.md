@@ -1,7 +1,7 @@
-[![GitHub release](https://img.shields.io/github/release/PurpleI2P/i2pd-android.svg?label=latest%20release)](https://github.com/PurpleI2P/i2pd-android/releases/latest)
-[![License](https://img.shields.io/github/license/PurpleI2P/i2pd-android.svg)](https://github.com/PurpleI2P/i2pd-android/blob/openssl/LICENSE)
-[![Android CI](https://github.com/PurpleI2P/i2pd-android/actions/workflows/android.yml/badge.svg)](https://github.com/PurpleI2P/i2pd-android/actions/workflows/android.yml)
-[![Downloads](https://img.shields.io/github/downloads/PurpleI2P/i2pd-android/total.svg)]()
+[![GitHub release](https://img.shields.io/github/release/PurpleI2P/i2pd-android-legacy.svg?label=latest%20release)](https://github.com/PurpleI2P/i2pd-android-legacy/releases/latest)
+[![License](https://img.shields.io/github/license/PurpleI2P/i2pd-android-legacy.svg)](https://github.com/PurpleI2P/i2pd-android-legacy/blob/openssl/LICENSE)
+[![Android CI](https://github.com/PurpleI2P/i2pd-android-legacy/actions/workflows/android.yml/badge.svg)](https://github.com/PurpleI2P/i2pd-android-legacy/actions/workflows/android.yml)
+[![Downloads](https://img.shields.io/github/downloads/PurpleI2P/i2pd-android-legacy/total.svg)]()
 
 # i2pd android
 
